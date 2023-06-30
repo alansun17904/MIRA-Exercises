@@ -1,0 +1,423 @@
+\documentclass[11pt,oneside]{book}
+\usepackage{generalmath}
+\usepackage{mathmacros}
+\usepackage[utf8]{inputenc}
+
+\usepackage{caption}
+\usepackage{float}
+\usepackage{graphicx}
+%\graphicspath{ {./images/} }
+
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usetikzlibrary{arrows}
+
+\usepackage{tikz-cd}
+\tikzcdset{%
+    arrow style=tikz,
+    diagrams={>=stealth}
+}%
+
+\usepackage{hyperref}
+\hypersetup{%
+	colorlinks=true,
+	linkcolor=blue
+}%
+
+\makeatletter
+\newcommand\theHtcb@cnt@theorem{\thechapter.\arabic{tcb@cnt@theorem}}
+\makeatother
+
+
+\begin{document}
+
+\hypersetup{pageanchor=false}
+% front matter: title page, preface, table of contents
+\frontmatter
+
+% title
+%\maketitle
+
+\hypersetup{pageanchor=false}
+% table of contents
+\tableofcontents
+
+
+
+% main matter: chapters, text, etc.
+\mainmatter
+
+
+\chapter{Riemann Integration}
+
+
+
+
+
+\chapter{Measures}
+
+\section{Outer Measure on \texorpdfstring{$\R$}{R}}
+
+\begin{exercise}
+    Prove that if $A$ and $B$ are subsets of $\R$ and $\abs{B} = 0$, then $\abs{A \cup B} = \abs{A}$.
+\end{exercise}
+
+\begin{solution}
+    $\abs{A} \leq \abs{A \cup B} \leq \abs{A} + \abs{B} = \abs{A}$.
+\end{solution}
+
+\begin{exercise}
+    Suppose $A \subseteq \R$ and $t \in \R$. Let $tA = \{ta: a \in A\}$. Prove that $\abs{tA} = \abs{t} \abs{A}$. [Assume that $0 \cdot \infty$ is defined to be $0$.]
+\end{exercise}
+
+\begin{solution}
+    If $t = 0$, then $tA = \{0\}$ and the claim follows. Suppose $t \ne 0$. If $\{I_k\}$ is a cover of $A$ by open intervals, then $\{tI_k\}$ is a cover of $tA$ by open intervals, and $\sum \ell(tI_k) = \abs{t} \sum \ell(I_k)$. Thus, $\abs{tA} \leq \sum \ell(tI_k) = \abs{t} \sum \ell(I_k)$. Taking the infimum over all such open covers $I_k$, we have $\abs{tA} \leq \abs{t}\abs{A}$. Applying what we have just proved to the set $tA$, we have $\abs{A} = \abs{t^{-1}tA} \leq \abs{t}^{-1}\abs{tA}$ as well, so $\abs{t}\abs{A} \leq \abs{tA}$.
+\end{solution}
+
+\begin{exercise}
+    Prove that if $A, B \subseteq \R$ and $\abs{A} < \infty$, then $\abs{B \setminus A} \geq \abs{B} - \abs{A}$.
+\end{exercise}
+\begin{solution}
+    It suffices to show that $|B\setminus A| + |A| \geq |B|$. By the
+    subadditivity of outer measure, $|B\setminus A| + |A| \geq |(B\setminus A)
+    \cup A|$. Since $(B \setminus A)\cup A \supset B$ and outer measure
+    preserves order, then $|(B\setminus A) \cup A| \geq |B|$. Thus, $|B\setminus
+    A| \geq |B| - |A|$. 
+\end{solution}
+
+\begin{exercise}
+    Suppose $r_1, r_2,\ldots$ is a sequence that contains every rational number. Let 
+    \[
+    F = \R \setminus \bigcup_{k=1}^\infty \left(r_k - \frac{1}{2^k}, r_k + \frac{1}{2^k}\right).
+    \]
+    \begin{enumerate}[label=(\alph*)]
+        \item Show that $F$ is a closed subset of $\R$.
+        \item Prove that if $I$ is an interval contained in $F$, then $I$ contains at most one element. 
+        \item Prove that $|F| = \infty$
+    \end{enumerate}
+\end{exercise}
+\begin{solution}
+    \begin{enumerate}[label=(\alph*)]
+        \item The arbitrary union of open sets is open. Thus,
+        $\bigcup_{k=1}^\infty (r_k - 1/2^k, r_k + 1/2^k)$ is open. And, by
+        definition, the complement of an open set is closed. So, $F$ is closed. 
+        \item By way of contradiction, suppose that there exists an interval $I
+        \subset F$ such that $I$ contains more than one element. That is, $I =
+        (a,b)$ for $a < b$. Then, it follows from the denseness of $\Q$ in $\R$
+        that there exists a rational number in $I$. Thus, there is an centered
+        around this rational number that is not contained in $F$. Thus, $I$ is
+        not connected and therefore, $I$ is not an interval. So, any intervals
+        in $F$ contain only one element. 
+        \item It follows from problem 3 that 
+        \begin{align*}
+            |F| &\geq |\R| - \left|\bigcup_{k=1}^\infty \left(r_k - \frac{1}{2^k}, r_k + \frac{1}{2^k}\right)\right|, \\
+            &\geq |\R| - \sum_{k=0}^\infty \frac{1}{2^k}, \\
+            &\geq |\R| - 2, \\
+            &\geq \infty.
+        \end{align*}
+    \end{enumerate}
+\end{solution}
+
+
+\section{Measurable Spaces and Functions}
+
+\begin{exercise}
+    Give an example of a measurable space $(X, \mathscr{S})$ and a family $\{f_t\}_{t \in \R}$ such that each $f_t$ is an $\mathscr{S}$-measurable function from $X$ to $[0, 1]$, but the function $f: X \to [0, 1]$ defined by $f(x) = \sup\{f_t(x): t \in \R\}$ is not $\mathscr{S}$-measurable.
+\end{exercise}
+
+\begin{solution}
+    Let $(X, \mathscr{S})$ be the real numbers with the sigma algebra consisting of all the countable sets, or the sets with countable complement. Let $j: \R \to (0, 1)$ be any bijection, e.g. $j(r) = (2/\pi) \arctan(r) + 1$. For each $t \in \R$, define $f_t = \chi_{\{j(t)\}}$. If $x \not\in (0, 1)$, then $f_t(x) = 0$ for all $t \in \R$ and thus $f(x) = 0$. On the other hand, if $x \in (0, 1)$, then $f_t(x) = 1$ precisely when $t = j^{-1}(x)$, and $f_t(x) = 0$ otherwise. Hence, $f(x) = 1$. Hence, $f = \chi_{(0, 1)}$, which is not measurable, since $(0, 1) \not\in \mathscr{S}$.
+\end{solution}
+
+\begin{exercise}
+    Show that 
+    \[
+    \lim_{j\to\infty}\left(\lim_{k\to\infty} \cos(j!\pi x)^{2k}\right) = \begin{cases}1 &\text{if}\,x\in\Q, \\ 0 &\text{o/w.}\end{cases}
+    \]
+    for every $x \in \R$.
+\end{exercise}
+\begin{solution}
+    First consider the inside iterated limit as $k\to \infty$. We
+    first show that if $-1 < \cos(j!\pi x) < 1$, then the inner limit goes to 0.
+    
+        If $x \in [0,1]$, then 
+        \[
+            \lim_{a \to \infty} x^a = \begin{cases}1 &\text{if}\,x =1, \\ 0 &\text{otherwise.}\end{cases}
+        \]
+        If $x=1$, then $x^a = 1$ for all $a \in \R$. So, $\lim_{a \to \infty}
+        x^a = 1$. On the other hand, consider the case where $x \in [0,1)$. Let
+        $a = \tilde a + b$ such that $\tilde a \in \Z$ and $0 \leq b < 1$. Then,
+        it follows that $x^a = x^{\tilde a + b} = x^b \cdot x^{\tilde a }$.
+        Since $x \in [0,1)$, $x \leq  x^b \leq 1$. Thus, it follows that $x^a
+        \leq x^{\tilde a}$, where $\tilde a \in \Z^+$. Since $\lim_{a \to
+        \infty} x^{\tilde a} = 0$ and $0 \leq x^a$ for all $a \in \R$, it must
+        be that $\lim_{a\to\infty} x^a = 0$. 
+    Thus, it follows that 
+    \[
+        \lim_{k\to\infty} \cos(j!\pi x)^{2k} = \begin{cases}1 &\text{if}\, \cos(j!\pi x)^{2} = 1, \\ 0 &\text{otherwise.}\end{cases}
+    \]
+    So, it suffices to show that $\cos(j!\pi x)^2 = 1$ only if $x \in \Q$, as
+    $j\to \infty$. If $x\in \Q$, then by definition, there exists some $a,b\in
+    \Z$ such that $x = \frac{a}{b}$. Thus, by the definition of the limit, for
+    every integer sequence which converges to $\infty$, $j_1,j_2,\ldots$, there
+    must exist some $N$ such that for all $n > N, j_n > |b|$. For all such
+    $j_n$, it must be that 
+    \[\cos\left(j_n!\pi \frac{a}{b}\right) = \cos(\underbrace{j_n(j_n-1)\cdot
+    \ldots \cdot(|b|+1)(|b|-1)}_{\text{(a)}}\ldots \cdot \pi a).\] Since (a) is
+    an integer and $a \in \Z$, it must be that the cosine term is in $\{-1,1\}$.
+    Thus, the limit converges to 1. On the other hand, if $x \in \R \setminus
+    \Q$, then for every integer sequence $j_1,j_2,\ldots$, there does not exist
+    some $j_n$ such that $j_n! x$ is an integer, otherwise, $x$ would be
+    rational. 
+\end{solution}
+
+\section{Measures and Their Properties}
+
+\begin{exercise}
+    Give an example of a measure space $(X, \mathscr{S}, \mu)$ and a decreasing sequence $E_1 \supset E_2 \supset \ldots$ of sets in $\mathscr{S}$ such that \[
+    \mu\left(\bigcap_{k=1}^\infty E_k\right) \neq \lim_{k\to\infty} \mu(E_k).
+    \]
+\end{exercise}
+\begin{solution}
+    Let $X = \R$, $\mathscr{S}$ be the Borel sets, and let $\mu$ 
+    be the Lebesgue measure. Let $E_k$ be the following set:
+    \[
+        E_k = \bigcup_{x \in \Q} \left(x-\frac{1}{k}, x + \frac{1}{k}\right).
+    \]
+    Then, it follows that for any $E_k, \mu(E_k) = \infty$. Since $\bigcap_{k=1}^\infty E_k = \Q$, 
+    $\mu\left(\bigcap_{k=1}^\infty E_k\right) = 0$. However, $\lim_{k\to\infty} \mu(E_k) = \infty$. 
+    Thus, the hypothesis that $\mu(E_1) < \infty$ is necessary.
+\end{solution}
+
+\section{Lebesgue Measure}
+\begin{exercise}
+    Prove if $A \subset \R$ is Lebesgue measurable, then there exists an increasing sequence $F_1 \subset F_2 \subset \ldots$ of closed sets contained in $A$ such that \[
+    \left|A \setminus \bigcup_{k=1}^\infty F_k\right| = 0.
+    \]
+\end{exercise}
+\begin{solution}
+    From the equivalent definitions of the Lesbegue measurable sets,
+    there must exist a sequence of closed sets $F_1, F_2, \ldots$ where $F_k
+    \subset A$ and 
+    \[
+        \left|A \setminus \bigcup_{k=1}^{\infty} F_k\right| = 0.
+    \]
+    Since any finite union of closed sets is closed, then it follows that $F_1,
+    F_1 \cup F_2, F_1 \cup F_2 \cup F_3, \ldots$, is a sequence of increasing
+    closed sets also contained in $A$. And since $\bigcup_{k=1}^\infty F_k =
+    \bigcup_{k=1}^\infty \bigcup_{\ell=1}^k F_\ell$, then the previous equation
+    holds.
+\end{solution}
+
+\begin{exercise}
+    Suppose $A \subseteq \R$ and $\abs{A} < \infty$. Prove that $A$ is Lebesgue measurable if and only if for every $\varepsilon > 0$ there exists a set $G$ that is the union of finitely many disjoint bounded open intervals such that $\abs{A \setminus G} + \abs{G \setminus A} < \varepsilon$.
+\end{exercise}
+
+\begin{exercise}
+    Suppose $b < c$ and $A \subseteq (b, c)$. Prove that $A$ is Lebesgue measurable if and only if $\abs{A} + \abs{(b, c) \setminus A} = c - b$.
+\end{exercise}
+
+\begin{solution}
+    The only if direction is clearly true. Conversely, suppose $\abs{A} + \abs{(b, c) \setminus A} = c - b$ and let $\varepsilon > 0$. Choose a cover $G$ of $A$ that is the countable union of open intervals such that the sum of their lengths is $< \abs{A} + \varepsilon$; in particular, $\abs{G} < \abs{A} + \varepsilon$. By intersecting, we can choose $G$ to be a subset of $(b, c)$. Note that \[\abs{G \setminus A} + \abs{(b, c) \setminus G} = \abs{G \setminus A} + \abs{[b, c] \setminus G} = \abs{[b, c] \setminus A} = \abs{(b, c) \setminus A} = c - b - \abs{A},\] where we are using the fact that $\abs{A} + \abs{F} = \abs{A \cup F}$ when $A, F$ are disjoint and $F$ is closed. Subtracting $\varepsilon$ on both sides, we see that \[\abs{G \setminus A} + \abs{(b, c) \setminus G} - \varepsilon = c - b - \abs{A} - \varepsilon < c - b - \abs{G}.\] Since $\abs{(b, c) \setminus G} \geq (c - b) - \abs{G}$, this implies \[\abs{G \setminus A} < \varepsilon.\] $\varepsilon$ was arbitrary, so $A$ is Lebesgue measurable.
+\end{solution}
+
+\begin{exercise}
+    Suppose that $A \subset \R$. Prove that $A$ is Lebesgue measurable if and only if 
+    \[
+        |(-n,n) \cap A| + |(-n,n) \setminus A| = 2n,
+    \]
+    for every $n\in\Z^+$.
+\end{exercise}
+\begin{solution}
+    It must be that $(-n,n) \cap A \subset (-n,n)$. So, let $B = (-n,n) \cap A$. Then,
+    $(-n,n) \setminus A = (-n,n) \setminus B$. Since 
+    \begin{align*}
+        x \in (-n,n) \setminus A &\iff x \in (-n,n) \,\text{and}\, x\notin \setminus A, \\
+        &\iff x \in (-n,n) \,\text{and}\, x \notin A \cap (-n,n), \\
+        &\iff x \in (-n,n)\setminus B.
+    \end{align*}
+    So, by the previous problem in this section, this equality only holds if and only if $(-n,n) \cap A$ is Lebesgue 
+    measurable for all $n\in \Z^+$. Thus, in the limit as $n\to\infty$, the equality only holds as $A$ is 
+    Lebesgue measurable.
+\end{solution}
+
+
+
+\section{Convergence of Measurable Functions}
+\begin{exercise}
+    Give an example to show that Egorov's Theorem can fail without the hypothesis that $\mu(X) < \infty$.
+\end{exercise}
+\begin{solution}
+    Suppose that $X = \R$, then $\mu(X) \not< \infty$. It remains to
+    show that we can construct a function along with a sequence of functions
+    that does not converge uniformly on a large part of the domain. Consider
+    problem 30 from chapter 2B, where 
+    \[
+        f_n(x) = \cos(n\pi x)^{2n},    
+    \]
+    we've already show that this converges pointwise to the function,
+    \[
+        f(x) = \begin{cases} 1 &\text{if}\, x\in\Q, \\ 0&\text{o/w.}\end{cases}  
+    \]
+    However, the sequence does not converge uniformly on any irrational point.
+    Thus, there does not exist an arbitrarily large subset of $\R$ where the
+    sequence converges uniformly. 
+\end{solution}
+
+\begin{exercise}
+    Suppose that $F$ is a closed and bounded subset of $\R$ and $g_1,g_2,\ldots$ is an increasing sequence of continuous real-valued functions on $F$ such that $\sup\{g_1(x), g_2(x),\ldots\} < \infty$ for each $x \in F$. Define a real-valued function $g$ on $F$ by \[
+        g(x) = \lim_{k\to\infty} g_k(x).
+    \]
+    Prove that $g$ is continuous on $F$ if and only if $g_1,g_2,\ldots$ converges uniformly on $F$ to $G$.
+\end{exercise}
+\begin{solution}
+    
+\end{solution}
+
+
+
+
+
+\chapter{Integration}
+
+
+\section{Integration with Respect to a Measure}
+
+\begin{exercise}
+    Suppose that $(X, \mathscr{S}, \mu)$ is a measure space and $f_1, f_2, \ldots$ is a sequence of nonnegative $\mathscr{S}$-measurable functions on $X$. Define a function $f: X \to [0, \infty]$ by $f(x) = \liminf_{k \to \infty} f_k(x)$.
+    \begin{enumerate}[label=(\alph*)]
+        \item Show that $f$ is an $\mathscr{S}$-measurable function.
+
+        \item Prove that \[\int f \, d\mu \leq \liminf_{k \to \infty} \int f_k \, d\mu.\]
+
+        \item Give an example showing that the inequality in (b) can be a strict inequality even when $\mu(X) < \infty$ and the family of functions $\{f_k\}_{k \in \Z^+}$ is uniformly bounded.
+    \end{enumerate}
+\end{exercise}
+
+\begin{solution}
+    \begin{enumerate}[label=(\alph*)]
+        \item Define $g_k: X \to [0, \infty]$ by $g_k(x) = \inf\{f_k(x), f_{k+1}(x), \ldots\}$. Then $g_k$ increases with $k$, and by definition, $\lim_{k \to \infty} g_k = \liminf_{k \to \infty} f_k = f$. We showed before that taking $\inf$ of $\Z^+$-indexed sequences preserves measurability, and that taking limits of such sequence does also. Hence, $f$ is measurable.
+
+        \item Since $g_k \leq f_{k+j}$ for each $k$ and $j \geq 0$, we have \[\int g_k \, d\mu \leq \int f_{k+j} \, d\mu\] for all $j \geq 0$. In particular, this gives \[\int g_k \, d\mu \leq \inf\bigg\{ \int f_{k} \, d\mu, \int f_{k+1} \, d\mu, \ldots \bigg\}.\] Taking limits as $k \to \infty$, we get \[\lim_{k \to \infty} \int g_k \, d\mu \leq \liminf_{k \to \infty} \int f_k \, d\mu.\] Using monotone convergence and the fact that $\lim_{k \to \infty} g_k = f$, we get \[\int f \, d\mu \leq \liminf_{k \to \infty} \int f_k \, d\mu\] as desired.
+
+        \item Let $(X, \mathscr{S}, \mu)$ be the interval $[0, 1]$ with the Lebesgue measure inherited from $\R$. Define $f_k = \chi_{[0, 1/2)}$ when $k$ is odd, and $f_k = \chi_{[1/2, 1]}$ when $k$ is even. For each $x \in [0, 1]$ and $k \geq 1$, $\inf\{f_k(x), f_{k+1}(x), \ldots\} = 0$, so $\liminf_{k \to \infty} f_k = 0$. On the other hand, $\int f_k \, d\mu = 1/2$ for each $k$. Hence, \[0 = \int f \, d\mu < \liminf_{k \to \infty} \int f_k \, d\mu = \frac 12.\]
+    \end{enumerate}
+\end{solution}
+
+\begin{exercise}
+    Give an example of a sequence $x_1, x_2, \ldots$ of real numbers such that \[\lim_{n \to \infty} \sum_{k=1}^n x_n \text{ exists in $\R$,}\] but $\int x \, d\mu$ is not defined, where $\mu$ is the counting measure on $\Z^+$ and $x$ is the function on $\Z^+$ to $\R$ defined by $x(k) = x_k$.
+\end{exercise}
+
+\begin{solution}
+    Let $\{x_k\}$ be the sequence $1, -1, 1/2, -1/2, 1/3, -1/3, \ldots$. Then $\lim_{n \to \infty} \sum_{k=1}^n x_k = 0$. Viewed as a function $x: \Z^+ \to \R$, however, $\int x^+ \, d\mu = \sum_{k \geq 1} 1/k = \infty$ and $\int x^- \, d\mu = \sum_{k \geq 1} 1/k = \infty$, so $\int x \, d\mu$ is undefined.
+\end{solution}
+
+
+\begin{exercise}
+    Suppose $(X, \mathscr{S}, \mu)$ is a measure space and $f_1, f_2, \ldots$ is a monotone (meaning either increasing or decreasing) sequence of $\mathscr{S}$-measurable functions. Define $f: X \to [-\infty, \infty]$ by \[f(x) = \lim_{k \to \infty} f_k(x).\] Prove that if $\int \abs {f_1} \, d\mu < \infty$, then \[\lim_{k\to\infty} \int f_k \, d\mu = \int f \, d\mu.\]
+\end{exercise}
+
+\begin{solution}
+    It suffices to prove the theorem in the case that $f_1, f_2, \ldots$ is increasing. First, note that $f^+ = \lim_{k \to \infty} f_k^+$ and $f^- = \lim_{k \to \infty} f_k^-$. Thus, \[\lim_{k \to \infty} \int f_k \, d\mu = \lim_{k \to \infty} \int f_k^+ \, d\mu - \lim_{k \to \infty} \int f_k^- \, d\mu.\] We will show that $\int f_k^+ \, d\mu \to \int f^+ \, d\mu$ and $\int f_k^- \, d\mu \to \int f^- \, d\mu$. The first limit follows from monotone convergence, so we just have to prove the second, which reduces to the following: if $f_1, f_2, \ldots$ is a sequence of decreasing, nonnegative $\mathscr{S}$-measurable functions to $[0, \infty]$ with $\int f_1 \, d\mu < \infty$, then \[\lim_{k \to \infty} \int f_k \, d\mu = \int f \, d\mu.\]
+
+    First, since $\int f_k \, d\mu < \infty$ for all $k \geq 1$, we can assume that all the $f_k$ actually map into $[0, \infty)$, since modifying the values of a function on a measure $0$ set does not change its integral. Thus, we want to show that \[\lim_{k \to \infty} \bigg( \int f_k \, d\mu - \int f \, d\mu \bigg) = \lim_{k \to \infty} \int (f_k - f) \, d\mu = 0.\] We further reduce to the statement: if $f_1, f_2, \ldots$ is a decreasing sequence of nonnegative $\mathscr{S}$-measurable functions to $[0, \infty)$ with $\int f_1 \, d\mu < \infty$, converging pointwise to $0$, then $\int f_k \, d\mu \to 0$.
+
+    If $\int f_1 \, d\mu = 0$, are done. Hence, suppose $\int f_1 \, d\mu > 0$. Fix some small $\varepsilon > 0$, and let $P$ be an $\mathscr{S}$-partition $A_1, \ldots, A_m$ of $X$ such that $\int f_1 \, d\mu < \varepsilon + \mathscr{L}(f_1, P)$. Let $A$ denote the union of all the sets $A_j$ with $\inf_{A_j} f_1 > 0$. This set is necessarily of finite, nonzero measure (for small enough $\varepsilon$). By Egorov's theorem, there exists a measurable subset $B \subseteq A$ such that $\mu(A\setminus B) < \varepsilon$ and $f_1, f_2, \ldots$ converges uniformly on $B$.
+
+    We will estimate the integral \[\int f_k \, d\mu = \int \chi_{X\setminus A} f_k \, d\mu + \int \chi_{A\setminus B} f_k \, d\mu + \int_B f_k \, d\mu\] for large $k$. By uniform convergence on $B$, we have $f_k < \varepsilon$ on $B$ for sufficiently large $k$, whence $\int_B f_k \, d\mu \leq \mu(B) \varepsilon$ (Problem 19). Next, 
+    \begin{align*}
+        \int \chi_{X\setminus A} f_k \, d\mu \leq \int \chi_{X\setminus A} f_1 \, d\mu &= \int f_1 \, d\mu - \int \chi_A f_1 \, d\mu \\
+        &< \varepsilon + \mathscr{L}(f_1, P) - \mathscr{L}(\chi_A f_1, P) \\
+        &= \varepsilon,
+    \end{align*} 
+    where we are using the fact that $\inf{f_1} = 0$ on the $A_j$ which are not contained in $A$. Lastly, we estimate $\int \chi_{A\setminus B} f_k \, d\mu$. Refine the partition $P$ by adding the sets $X \setminus B$, $B$, then taking all intersections until a disjoint union is formed. Call the resulting partition $P'$ and its constituents $B_j$. Then 
+    \begin{align*}
+        \int \chi_{A \setminus B} f_k \, d\mu \leq \int \chi_{A \setminus B} f_1 \, d\mu < \varepsilon + \mathscr{L}(\chi_{A \setminus B}f_1, P') = \varepsilon + \sum_{B_j \subseteq A \setminus B} \mu(B_j)\inf_{B_j} f_1
+    \end{align*}
+    The last inequality is because 
+    \begin{align*}
+        \int \chi_B f_1 \, d\mu + \int \chi_{A\setminus B} f_1 \, d\mu = \int \chi_A f_1 \, d\mu &< \varepsilon + \mathscr{L}(\chi_A f_1, P) \\
+        &\leq \varepsilon + \mathscr{L}(\chi_{A \setminus B} f_1, P') + \mathscr{L}(\chi_B f_1, P') \\
+        &\leq \varepsilon + \mathscr{L}(\chi_{A \setminus B} f_1, P') + \int \chi_B f_1 \, d\mu
+    \end{align*}
+    and $\mathscr{L}(\chi_{A \setminus B} f_1, P') = \sum_{B_j \subseteq A \setminus B} \mu(B_j) \inf_{B_j} f_1$. Since the integrals are all bounded, the $B_j$ with $\inf_{B_j} f_1 = \infty$ must have $0$ measure. Thus, taking an upper bound $C$ for the finite $\inf_{B_j} f_1$, we see that \[\int \chi_{A/B} f_k \, d\mu < (1 + C)\varepsilon,\] where we are invoking $\mu(A \setminus B) < \varepsilon$. Putting these inequalities all together, we see that \[\int f_k d\mu = O(\varepsilon)\] for large $k$, proving the claim.
+
+    [Bruh, I realized after reading 3B that I essentially just proved a special case of the dominated convergence theorem.]
+\end{solution}
+
+
+
+\section{Limits of Integrals and Integrals of Limits}
+
+
+
+
+
+
+
+
+
+\chapter{Differentiation}
+
+
+
+
+
+
+\chapter{Product Measures}
+
+
+
+
+
+
+
+
+\chapter{Banach Spaces}
+
+
+
+
+
+
+
+\chapter{\texorpdfstring{$L^p$}{Lp} Spaces}
+
+
+
+
+
+\chapter{Hilbert Spaces}
+
+
+
+
+
+\chapter{Real and Complex Measures}
+
+
+
+
+
+\chapter{Linear Maps on Hilbert Spaces}
+
+
+
+
+
+
+\chapter{Fourier Analysis}
+
+
+
+
+
+\chapter{Probability Measures}
+
+
+
+
+
+
+
+\end{document}

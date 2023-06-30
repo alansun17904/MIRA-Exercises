@@ -1,0 +1,232 @@
+\NeedsTeXFormat{LaTeX2e}
+
+\ProvidesPackage{generalmath}[2019/09/14 A custom format for general math documents]
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[margin=3cm,includefoot]{geometry}
+\usepackage{mathtools}
+
+\usepackage{etoolbox}
+
+% % % % % % % % % %
+% page formatting %
+% % % % % % % % % %
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhead{}
+\fancyfoot{}
+%\fancyfoot[RO, LE]{\thepage}
+\fancyfoot[R]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\fancypagestyle{plain}{%
+    \renewcommand{\headrulewidth}{0pt}%
+    \fancyhf{}%
+    %\fancyfoot[RO, LE]{\thepage}%
+    \fancyfoot[R]{\thepage}
+}
+
+% % % % % % % % % % 
+% fonts & styling %
+% % % % % % % % % % 
+
+% \usepackage{mathptmx} % times font
+\usepackage{anyfontsize} % allows any size change on fonts
+% \usepackage{newpxtext}
+% \usepackage{newpxmath} % palatino math font
+%\usepackage{ebgaramond}
+\usepackage{newtxtext, newtxmath}
+\usepackage{enumitem} % allows customization of lists
+\usepackage{bm}
+
+% colored text
+\usepackage{xcolor}
+
+% % % % % % % % % % % % % % % % %
+% custom operators and commands %
+% % % % % % % % % % % % % % % % %
+
+
+
+
+% analysis operators
+\DeclareMathOperator{\bdry}{bdry}
+\DeclareMathOperator{\inte}{int}
+\DeclareMathOperator{\ext}{ext}
+\newcommand{\closure}[1]{\overline{#1}}
+
+\DeclareMathOperator{\Res}{Res}
+
+
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\gen}{\langle}{\rangle}
+\DeclarePairedDelimiter{\innprod}{\langle}{\rangle}
+\DeclarePairedDelimiter{\norm}{\|}{\|}
+
+% % % % % % % % % % 
+% title formatting %
+% % % % % % % % % % 
+
+\renewcommand*\thesection{\Alph{section}}
+
+\usepackage[explicit]{titlesec}
+\titleformat{\section}{\normalfont\Large}{\thechapter.\thesection}{1em}{#1}
+\titleformat{\chapter}[display]
+{\bfseries\huge\sc}
+{\sc\filright\chaptertitlename~\thechapter}
+{0ex}
+{\vspace{5pt}\normalfont\bfseries\huge#1}
+\titlespacing{\chapter}{0pt}{0pt}{4cm}
+
+% % % % % % % % % % % %
+% custom environments %
+% % % % % % % % % % % %
+
+\newcounter{result}
+
+% exercise and solutions
+
+\newcounter{exercise}[section]
+\renewcommand{\theexercise}{\arabic{exercise}}
+
+
+\newenvironment{exercise}[1][]{%
+	\stepcounter{exercise}\noindent{\textbf{\theexercise.}}\enspace
+    }%
+    {%
+	\par\vspace{.5em}
+}
+
+\newenvironment{solution}[1][]{%
+	\ifstrempty{#1}{\par\vspace{.em}\noindent{\textit{Solution.}}\enspace}{\par\vspace{.em}\noindent{\textbf{\textit{Solution #1}\enspace}}}
+}{%
+	\par\vspace{1em}
+}%
+
+% theorems and results
+
+\usepackage[most]{tcolorbox}
+\tcbuselibrary{theorems}
+\tcbuselibrary{skins}
+
+\tcbset{
+theostyle/.style={%
+  breakable,
+  enhanced,% <--- jigsaw
+  sharp corners,
+  boxrule=1pt,
+  left=0.2cm,right=0.2cm,top=0.2cm,
+  titlerule=0.5em,
+  toptitle=0.1cm,
+  bottomtitle=-0.05cm,
+  colframe=purple!65!blue,colback=white,coltitle=white,
+  separator sign={\quad},
+  fonttitle=\fontfamily{phv}\selectfont\bfseries,fontupper=\normalsize,
+  description font=\fontfamily{phv}\selectfont\itshape\bfseries},%
+  %
+defstyle/.style={%
+  theorem style=plain,
+  breakable,
+  enhanced,% <--- jigsaw
+  boxrule=1pt,
+  %toprule=1pt,bottomrule=1pt,
+  left=0.2cm,right=0.2cm,top=0.2cm,
+  toptitle=0.1cm,
+  bottomtitle=-0.05cm,
+  colframe=blue!50!black,colback=blue!5!white,coltitle=black,
+  separator sign={\quad},
+  fonttitle=\fontfamily{phv}\selectfont\bfseries,fontupper=\normalsize,
+  description font=\fontfamily{phv}\selectfont\itshape\bfseries},%
+  %
+lemstyle/.style={%
+  breakable,
+  enhanced,% <--- jigsaw
+  sharp corners,
+  boxrule=1pt,
+  left=0.2cm,right=0.2cm,top=0.2cm,
+  titlerule=0.5em,
+  toptitle=0.1cm,
+  bottomtitle=-0.05cm,
+  colframe=white!25!black,colback=white,coltitle=white,
+  separator sign={\quad},
+  fonttitle=\fontfamily{phv}\selectfont\bfseries,fontupper=\normalsize,
+  description font=\fontfamily{phv}\selectfont\itshape\bfseries},
+  %
+propstyle/.style={%
+  breakable,
+  enhanced,% <--- jigsaw
+  sharp corners,
+  boxrule=1pt,
+  left=0.2cm,right=0.2cm,top=0.2cm,
+  titlerule=0.5em,
+  toptitle=0.1cm,
+  bottomtitle=-0.05cm,
+  colframe=blue!50!black,colback=white,coltitle=white,
+  separator sign={\quad},
+  fonttitle=\fontfamily{phv}\selectfont\bfseries,fontupper=\normalsize,
+  description font=\fontfamily{phv}\selectfont\itshape\bfseries},
+  % 
+}
+
+\newtcbtheorem[number within=chapter]{theorem}{Theorem}{theostyle}{thm}
+
+\newtcbtheorem[use counter from=theorem]{proposition}{Proposition}{propstyle}{prop}
+
+\newtcbtheorem[use counter from=theorem]{corollary}{Corollary}{lemstyle}{cor}
+
+\newtcbtheorem[use counter from=theorem]{lemma}{Lemma}{lemstyle}{lem}
+  
+\newtcbtheorem{defin}{Definition}{defstyle}{def}
+
+\newenvironment{definition}{
+	\begin{defin*}{}
+}{%
+	\end{defin*}
+}
+
+\newtcolorbox{example}[1][]{%
+  breakable,
+  enhanced jigsaw, % better frame drawing
+  borderline west={2pt}{0pt}{blue}, % straight vertical line at the left edge
+  sharp corners, % No rounded corners
+  boxrule=0pt, % no real frame,
+  fonttitle={\itshape\bfseries},
+  colback=white!95!black,
+  coltitle={black},  % Black colour for title
+  title={Example:\ },  % Fixed title
+  attach title to upper, % Move the title into the box
+  #1
+}
+% remark
+
+\newenvironment{remark}{\par\vspace{.5em}\noindent{\textbf{\textit{Remark}}\enspace}}{\par\vspace{.5em}}
+
+
+% counters
+
+\usepackage{xpatch}
+\numberwithin{equation}{chapter}
+
+
+\newcommand\crule[3][black]{\textcolor{#1}{\rule[-.2mm]{#2}{#3}}}
+\newcommand{\qedsymbol}{\crule{1.5mm}{3.4mm}}
+
+\newenvironment{proof}[1][]{%
+	\ifstrempty{#1}{%
+	\noindent{\textit{Proof.\quad\!}}%
+}{%
+	\noindent{\textit{#1\quad\!}}%
+}%
+}{%
+\hfill{}\qedsymbol\par\vspace{.5em}
+}%
+
+
+
+
+
+\endinput
