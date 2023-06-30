@@ -271,6 +271,50 @@
     Prove that $g$ is continuous on $F$ if and only if $g_1,g_2,\ldots$ converges uniformly on $F$ to $G$.
 \end{exercise}
 \begin{solution}
+    The converse has already been proved in the text, so it remains to
+    show the forward direction. For every $\eps > 0$, it suffices to show that
+    there exists some $N \in \Z^+$ such that for all $n > N$, $g(x) - g_n(x) <
+    \eps$ for all $x \in F$. By pointwise convergence and continuity of $g$, 
+    for every $x\in F$, there exists
+    some $N_x$, $\delta_x$ such that $(g - g_n)(x') < \eps$ for all $x' \in (x-\delta_x, x+\delta_x)$.
+    Now, consider the open cover of $F$, $\cU = \{(x-\delta_x, x+\delta_x): x\in F\}$. Since $F$ is 
+    compact, there exists a finite subcover of $\cU$ which we denote as $\cU'$. 
+    Thus, let $N = \max_{(x-\delta_x, x+\delta_x) \in \cU'} N_x$. Then, by the monotonicity of $g_n$s,
+    it follows that for all $n > N$, $g(x) - g_n(x) < \eps$ for all $x \in F$. 
+\end{solution}
+\begin{exercise}
+    Suppose that $\mu$ is the measure on $(\Z^+, 2^{\Z^+})$ defined by 
+    \[
+        \mu(E) = \sum_{n\in E}\frac{1}{2^n}.
+    \]
+    Prove that for every $\eps > 0$, there exists a set $E\subset \Z^+$ with $\mu(\Z^+ \setminus E) < \eps$ such that $f_1,f_2,\ldots$ converges uniformly on $E$ for every sequence of functions $f_1,f_2,\ldots$ from $\Z^+$ to $\R$ that converges pointwise to $\Z^+$.
+\end{exercise}
+\begin{solution}
+    For any $\eps > 0$, define $n\in\Z^+$ such that 
+    \[
+        \sum_{i=1}^n \frac{1}{2^i} > 1 - \eps.     
+    \]
+    Also, let $E = \{1, 2, \ldots, n\}$. So, it follows by the definition of $\mu$ that $\mu(\Z^+\setminus E) < \eps$. 
+    Now, consider any sequence of functions $f_1, f_2,\ldots$ which converges pointwise to $f$. By the definition
+    of pointwise convergence, it must be that for fixed $\eps' > 0$, 
+    \[
+        \bigcup_{m=1}^\infty \bigcap_{k=m}^\infty \left\{x\in E: |f(x) - f_k(x)| < \eps'\right\} = E.   
+    \]
+    Since $E$ is finite, there must exist some $N \in \Z^+$ such that 
+    \[
+        \bigcup_{m=1}^N \bigcap_{k=m}^\infty \left\{x\in E: |f(x) - f_k(x)| < \eps'\right\} = E.
+    \]
+    Thus, it follows that if $k > N$, then $|f(x) - f_k(x)| < \eps'$ for all $x\in E$. Therefore, 
+    $f_1,f_2,\ldots$ converges uniformly on $E$. 
+\end{solution}
+
+\begin{exercise}
+    Suppose $F_1,F_2,\ldots,F_n$ are disjoint closed subsets of $\R$. Prove that if \[
+    g: F_1 \cup \ldots \cup F_n \to \R
+    \]
+    is a function such that $g|_{F_k}$ is a continuous function for each $k\in \{1,\ldots,n\}$, then $g$ is a continuous function.
+\end{exercise}
+\begin{solution}
     
 \end{solution}
 
